@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary-50: 240 253 250;
+    --color-primary-100: 204 251 241;
+    --color-primary-200: 153 246 228;
+    --color-primary-300: 94 234 212;
+    --color-primary-400: 45 212 191;
+    --color-primary-500: 20 184 166;
+    --color-primary-600: 13 148 136;
+    --color-primary-700: 15 118 110;
+    --color-primary-800: 17 94 89;
+    --color-primary-900: 19 78 74;
+  }
+
+  /* Dark theme styles */
+  html {
+    @apply transition-colors duration-300;
+  }
+
+  body {
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300;
+  }
+
+  /* Global dark mode text improvements */
+  .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+    @apply text-gray-100;
+  }
+
+  .dark p {
+    @apply text-gray-300;
+  }
+
+  .dark span {
+    @apply text-gray-300;
+  }
+
+  /* Override for specific utility classes */
+  .dark .text-gray-900 {
+    @apply text-gray-100 !important;
+  }
+
+  .dark .text-gray-800 {
+    @apply text-gray-200 !important;
+  }
+
+  .dark .text-gray-700 {
+    @apply text-gray-300 !important;
+  }
+
+  .dark .text-gray-600 {
+    @apply text-gray-400 !important;
+  }
+
+  .dark .text-gray-500 {
+    @apply text-gray-400 !important;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:bg-primary-400;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-sm font-medium rounded-md text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500;
+  }
+
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-lg shadow-sm dark:shadow-gray-900/20 p-6 border border-gray-100 dark:border-gray-700;
+  }
+
+  .input-field {
+    @apply mt-1 block w-full border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100;
+  }
+
+  .form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-300;
+  }
+
+  .error-message {
+    @apply mt-1 text-sm text-red-600;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary-100 text-primary-800;
+  }
+
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .badge-warning {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+
+  .badge-error {
+    @apply bg-red-100 text-red-800;
+  }
+
+  .link {
+    @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium;
+  }
+
+  .section-title {
+    @apply text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4;
+  }
+
+  .section-description {
+    @apply text-sm text-gray-600 dark:text-gray-400 mb-6;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(13, 148, 136, 0.6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 118, 110, 0.8);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(20, 184, 166, 0.7);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 184, 166, 0.9);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-in-out;
+}
+
+/* Focus styles */
+*:focus-visible {
+  outline: 2px solid var(--color-primary-500);
+  outline-offset: 2px;
+}
+
+/* Loading spinner */
+.loading-spinner {
+  @apply animate-spin rounded-full border-2 border-gray-300;
+  border-top-color: var(--color-primary-500);
+}
+
+/* Toast styles */
+.toast {
+  @apply rounded-lg shadow-lg p-4 mb-4;
+}
+
+.toast-success {
+  @apply bg-green-500 text-white;
+}
+
+.toast-error {
+  @apply bg-red-500 text-white;
+}
+
+.toast-info {
+  @apply bg-blue-500 text-white;
+}
+
+.toast-warning {
+  @apply bg-yellow-500 text-white;
+}
+
+/* Logo styles - Simplified for debugging */
+.logo-text {
+  font-family: 'Orbitron', monospace !important;
+  font-weight: 900 !important;
+  font-size: inherit !important;
+  letter-spacing: 0.05em !important;
+  color: #14b8a6 !important;
+  text-shadow: 0 0 10px rgba(20, 184, 166, 0.3) !important;
+}
+
+/* Dark mode logo styles - Multiple selectors for reliability */
+html.dark .logo-text,
+.dark .logo-text,
+body.dark .logo-text {
+  color: #5eead4 !important;
+  text-shadow: 0 0 15px rgba(94, 234, 212, 0.5) !important;
+}
+
+/* Gradient version - will be applied if supported */
+@supports (-webkit-background-clip: text) {
+  .logo-text {
+    background: linear-gradient(135deg, #2dd4bf, #06b6d4, #3b82f6, #a855f7) !important;
+    background-size: 300% 300% !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    animation: gradient-shift 3s ease infinite !important;
+  }
+
+  html.dark .logo-text,
+  .dark .logo-text,
+  body.dark .logo-text {
+    background: linear-gradient(135deg, #5eead4, #22d3ee, #60a5fa, #c084fc) !important;
+    background-size: 300% 300% !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+  }
+}
+
+.logo-text:hover {
+  animation: gradient-shift 1s ease infinite;
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+
