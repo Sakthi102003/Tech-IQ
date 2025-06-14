@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
-import openaiService from '../../services/openai/openaiService';
+import backendService from '../../services/api/backendService';
 import useProjectsStore from '../../store/projectsStore';
 
 const projectSchema = z.object({
@@ -118,7 +118,20 @@ const ProjectForm = ({ onClose }) => {
 
   const onSubmit = async (data) => {
     try {
-      const recommendations = await openaiService.generateTechIQRecommendation(data);
+      // Transform data to match backend API format
+      const apiData = {
+        projectName: data.projectName,
+        projectType: data.developmentType,
+        description: data.description,
+        budget: data.budget,
+        timeline: data.timeline,
+        teamSize: data.teamSize,
+        experience: data.experience,
+        features: data.features,
+        currency: data.currency
+      };
+      
+      const recommendations = await backendService.generateRecommendations(apiData);
       
       // Create project data
       const projectId = Date.now().toString();
