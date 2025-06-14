@@ -19,7 +19,34 @@ const useAuthStore = create((set, get) => ({
   loading: true,
   error: null,
 
+  // Helper function to check if auth is available
+  checkAuth: () => {
+    if (!auth) {
+      toast.error('Authentication is not available. Please check your configuration.');
+      return false;
+    }
+    return true;
+  },
+
+  // Demo mode for when Firebase is not configured
+  enableDemoMode: () => {
+    const demoUser = {
+      uid: 'demo-user',
+      email: 'demo@techiq.com',
+      displayName: 'Demo User',
+      photoURL: null,
+    };
+    set({ user: demoUser, loading: false });
+    toast.success('Demo mode enabled! You can now explore the app.');
+  },
+
   initializeAuth: () => {
+    if (!auth) {
+      console.warn('Firebase auth not initialized. Setting loading to false.');
+      set({ loading: false });
+      return () => {}; // Return empty unsubscribe function
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       set({ user, loading: false });
     });
@@ -41,6 +68,11 @@ const useAuthStore = create((set, get) => ({
   },
 
   signIn: async (email, password) => {
+    if (!get().checkAuth()) {
+      set({ loading: false });
+      return;
+    }
+    
     try {
       set({ loading: true, error: null });
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -55,6 +87,11 @@ const useAuthStore = create((set, get) => ({
   },
 
   signUp: async (email, password) => {
+    if (!get().checkAuth()) {
+      set({ loading: false });
+      return;
+    }
+    
     try {
       set({ loading: true, error: null });
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);

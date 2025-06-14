@@ -1,11 +1,12 @@
 import {
-  ChartBarIcon,
-  ClockIcon,
-  CogIcon,
-  RocketLaunchIcon,
+    ChartBarIcon,
+    ClockIcon,
+    CogIcon,
+    RocketLaunchIcon,
 } from '@heroicons/react/24/outline';
 
 import { Link } from 'react-router-dom';
+import { auth } from '../services/firebase';
 import useAuthStore from '../store/authStore';
 
 const features = [
@@ -36,7 +37,7 @@ const features = [
 ];
 
 const Home = () => {
-  const { user, loading } = useAuthStore();
+  const { user, loading, enableDemoMode } = useAuthStore();
 
   return (
     <div>
@@ -70,18 +71,36 @@ const Home = () => {
                     ) : (
                       // Show registration and login buttons for non-authenticated users
                       <>
-                        <Link
-                          to="/register"
-                          className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 md:py-4 md:text-lg md:px-10 shadow-sm hover:shadow-lg transition-all duration-200"
-                        >
-                          Get Started
-                        </Link>
-                        <Link
-                          to="/login"
-                          className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-primary-700 bg-primary-100 hover:bg-primary-200 md:py-4 md:text-lg md:px-10 transition-all duration-200"
-                        >
-                          Sign In
-                        </Link>
+                        {auth ? (
+                          // Firebase is configured - show normal auth buttons
+                          <>
+                            <Link
+                              to="/register"
+                              className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 md:py-4 md:text-lg md:px-10 shadow-sm hover:shadow-lg transition-all duration-200"
+                            >
+                              Get Started
+                            </Link>
+                            <Link
+                              to="/login"
+                              className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-primary-700 bg-primary-100 hover:bg-primary-200 md:py-4 md:text-lg md:px-10 transition-all duration-200"
+                            >
+                              Sign In
+                            </Link>
+                          </>
+                        ) : (
+                          // Firebase not configured - show demo mode
+                          <div className="flex flex-col items-center gap-4">
+                            <button
+                              onClick={enableDemoMode}
+                              className="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 md:py-4 md:text-lg md:px-10 shadow-sm hover:shadow-lg transition-all duration-200"
+                            >
+                              Try Demo Mode
+                            </button>
+                            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                              Authentication is not configured. Try the demo to explore features.
+                            </p>
+                          </div>
+                        )}
                       </>
                     )
                   )}
@@ -235,10 +254,17 @@ const Home = () => {
                     <Link to="/dashboard" className="block w-full bg-primary-600 text-white rounded-lg py-3 px-4 text-center font-medium hover:bg-primary-700 transition-colors shadow-md">
                       Go to Dashboard
                     </Link>
-                  ) : (
+                  ) : auth ? (
                     <Link to="/register" className="block w-full bg-primary-600 text-white rounded-lg py-3 px-4 text-center font-medium hover:bg-primary-700 transition-colors shadow-md">
                       Join the Beta
                     </Link>
+                  ) : (
+                    <button 
+                      onClick={enableDemoMode}
+                      className="block w-full bg-primary-600 text-white rounded-lg py-3 px-4 text-center font-medium hover:bg-primary-700 transition-colors shadow-md"
+                    >
+                      Try Demo Mode
+                    </button>
                   )
                 )}
               </div>
