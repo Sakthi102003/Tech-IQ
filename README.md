@@ -274,4 +274,4 @@ If you encounter any issues:
 
 ---
 
-Built with ❤️ for developers, by developers
+Built with ❤️ for developers, Ungalil Oruvan
