@@ -6,6 +6,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import backendService from '../../services/api/backendService';
+import openaiService from '../../services/openai/openaiService';
 import useProjectsStore from '../../store/projectsStore';
 
 const projectSchema = z.object({
@@ -118,20 +119,35 @@ const ProjectForm = ({ onClose }) => {
 
   const onSubmit = async (data) => {
     try {
-      // Transform data to match backend API format
-      const apiData = {
-        projectName: data.projectName,
-        projectType: data.developmentType,
-        description: data.description,
-        budget: data.budget,
-        timeline: data.timeline,
-        teamSize: data.teamSize,
-        experience: data.experience,
-        features: data.features,
-        currency: data.currency
-      };
+      let recommendations;
       
-      const recommendations = await backendService.generateRecommendations(apiData);
+      try {
+        // First, try the backend API
+        console.log('Attempting to use backend API...');
+        
+        const apiData = {
+          projectName: data.projectName,
+          projectType: data.developmentType,
+          description: data.description,
+          budget: data.budget,
+          timeline: data.timeline,
+          teamSize: data.teamSize,
+          experience: data.experience,
+          features: data.features,
+          currency: data.currency
+        };
+        
+        recommendations = await backendService.generateRecommendations(apiData);
+        console.log('Backend API successful');
+        
+      } catch (backendError) {
+        console.warn('Backend API failed, falling back to local service:', backendError.message);
+        
+        // Fallback to local OpenAI service
+        toast.loading('Backend unavailable, using local recommendations...', { duration: 2000 });
+        recommendations = await openaiService.generateTechIQRecommendation(data);
+        console.log('Local service successful');
+      }
       
       // Create project data
       const projectId = Date.now().toString();
@@ -152,6 +168,7 @@ const ProjectForm = ({ onClose }) => {
       toast.success('Project created successfully!');
       navigate(`/recommendations/${projectId}`);
       onClose();
+      
     } catch (error) {
       toast.error('Failed to generate recommendations. Please try again.');
       console.error('Error creating project:', error);

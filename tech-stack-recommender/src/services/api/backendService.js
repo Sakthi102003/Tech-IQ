@@ -2,7 +2,7 @@
 class BackendAPIService {
   constructor() {
     this.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
-    this.timeout = 120000; // 2 minutes timeout for AI requests
+    this.timeout = 30000; // 30 seconds timeout - fail fast and fallback to local
   }
 
   async makeRequest(endpoint, options = {}) {
