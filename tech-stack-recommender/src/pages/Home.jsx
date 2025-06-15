@@ -96,9 +96,14 @@ const Home = () => {
                             >
                               Try Demo Mode
                             </button>
-                            <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
-                              Authentication is not configured. Try the demo to explore features.
-                            </p>
+                            <div className="text-center">
+                              <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                                Authentication is not configured. Try the demo to explore features.
+                              </p>
+                              <p className="text-xs text-gray-500 dark:text-gray-500">
+                                ✨ Intelligent recommendations powered by AI
+                              </p>
+                            </div>
                           </div>
                         )}
                       </>
