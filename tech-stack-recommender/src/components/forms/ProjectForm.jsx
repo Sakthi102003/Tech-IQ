@@ -139,14 +139,23 @@ const ProjectForm = ({ onClose }) => {
         
         recommendations = await backendService.generateRecommendations(apiData);
         console.log('Backend API successful');
+        toast.success('Recommendations generated using cloud AI service!', { duration: 3000 });
         
       } catch (backendError) {
         console.warn('Backend API failed, falling back to local service:', backendError.message);
         
         // Fallback to local OpenAI service
-        toast.loading('Backend unavailable, using local recommendations...', { duration: 2000 });
-        recommendations = await openaiService.generateTechIQRecommendation(data);
-        console.log('Local service successful');
+        const loadingToast = toast.loading('Backend unavailable, using local recommendations...');
+        try {
+          recommendations = await openaiService.generateTechIQRecommendation(data);
+          console.log('Local service successful');
+          toast.dismiss(loadingToast);
+          toast.success('Recommendations generated using local AI service!', { duration: 3000 });
+        } catch (localError) {
+          toast.dismiss(loadingToast);
+          console.error('Local service also failed:', localError);
+          throw new Error('Unable to generate recommendations. Please try again.');
+        }
       }
       
       // Create project data
