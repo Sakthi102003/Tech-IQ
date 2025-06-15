@@ -2,7 +2,7 @@
 class BackendAPIService {
   constructor() {
     this.baseURL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
-    this.timeout = 30000; // 30 seconds timeout
+    this.timeout = 120000; // 2 minutes timeout for AI requests
   }
 
   async makeRequest(endpoint, options = {}) {
@@ -49,6 +49,7 @@ class BackendAPIService {
   async generateRecommendations(projectData, aiProvider = 'openai') {
     try {
       console.log(`Generating recommendations using backend API with ${aiProvider}`);
+      console.log('Request data:', projectData);
       
       const response = await this.makeRequest('/ai/recommendations', {
         method: 'POST',
@@ -58,10 +59,21 @@ class BackendAPIService {
         }),
       });
 
+      console.log('Backend response:', response);
       return response.data;
     } catch (error) {
       console.error('Backend API error:', error);
-      throw new Error(`Failed to generate recommendations: ${error.message}`);
+      
+      // Provide more specific error messages
+      if (error.message.includes('timeout')) {
+        throw new Error('The AI service is taking too long to respond. This might be due to high demand. Please try again in a few minutes.');
+      } else if (error.message.includes('connect')) {
+        throw new Error('Unable to connect to the AI service. Please check your internet connection and try again.');
+      } else if (error.message.includes('500')) {
+        throw new Error('The AI service is currently experiencing issues. Please try again later.');
+      } else {
+        throw new Error(`Failed to generate recommendations: ${error.message}`);
+      }
     }
   }
 
