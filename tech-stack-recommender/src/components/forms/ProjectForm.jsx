@@ -408,7 +408,14 @@ const ProjectForm = ({ onClose }) => {
                     disabled={isSubmitting}
                     className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 disabled:bg-primary-400"
                   >
-                    {isSubmitting ? 'Generating...' : 'Generate Recommendations'}
+                    {isSubmitting ? (
+                      <div className="flex items-center">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Generating Recommendations...
+                      </div>
+                    ) : (
+                      'Generate Recommendations'
+                    )}
                   </button>
                 </div>
               </form>

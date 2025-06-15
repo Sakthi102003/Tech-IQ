@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ProjectForm from '../components/forms/ProjectForm';
+import ServiceStatus from '../components/ServiceStatus';
 
 import useAuthStore from '../store/authStore';
 import useProjectsStore from '../store/projectsStore';
@@ -125,6 +126,9 @@ const Dashboard = () => {
             <p className="mt-2 text-gray-600 dark:text-gray-300">
               Manage your projects and get technology recommendations.
             </p>
+            <div className="mt-3">
+              <ServiceStatus />
+            </div>
           </div>
         </div>
       </div>
