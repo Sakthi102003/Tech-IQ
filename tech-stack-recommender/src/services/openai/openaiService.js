@@ -11,6 +11,9 @@ const generateDynamicRecommendations = (projectData) => {
     features,
     currency
   } = projectData;
+  
+  // Normalize project type
+  const projectType = developmentType;
 
   // Determine frontend technology based on features and requirements
   const getFrontendRecommendation = () => {
@@ -528,10 +531,10 @@ const generateDynamicRecommendations = (projectData) => {
 
 const generateTechIQRecommendation = async (projectData, options = {}) => {
   try {
-    console.log('Generating recommendations for project:', projectData.projectName);
+    console.log('Generating local recommendations for project:', projectData.projectName);
     
     const { 
-      useBackend = true, 
+      useBackend = false, // Default to local recommendations when used as fallback
       aiProvider = 'openai', 
       useMockData = false,
       compareProviders = false 
@@ -550,7 +553,7 @@ const generateTechIQRecommendation = async (projectData, options = {}) => {
       } else {
         return await backendService.generateRecommendations(projectData, aiProvider);
       }
-    } else {
+    } else if (options.useDirectAPI) {
       // Use direct API calls (development/testing only)
       console.warn('⚠️ Using direct API calls - API keys will be exposed in browser!');
       
@@ -567,10 +570,15 @@ const generateTechIQRecommendation = async (projectData, options = {}) => {
       }
     }
 
-    // Generate customized recommendations based on project data
-    console.log('Generated recommendations for:', projectData.projectName);
+    // Generate customized recommendations based on project data (LOCAL FALLBACK)
+    console.log('Using local dynamic recommendations for:', projectData.projectName);
+    console.log('Project data:', projectData);
+    
+    // Add a small delay to simulate processing
+    await new Promise(resolve => setTimeout(resolve, 1000));
     
     const recommendations = generateDynamicRecommendations(projectData);
+    console.log('Generated recommendations:', recommendations);
 
     return recommendations;
   } catch (error) {
@@ -586,3 +594,4 @@ const openaiService = {
 
 export default openaiService;
 export { generateDynamicRecommendations };
+
