@@ -1,11 +1,12 @@
 import {
-    ChartBarIcon,
-    ClockIcon,
-    CogIcon,
-    RocketLaunchIcon,
+  ChartBarIcon,
+  ClockIcon,
+  CogIcon,
+  RocketLaunchIcon,
 } from '@heroicons/react/24/outline';
 
 import { Link } from 'react-router-dom';
+import AuthTest from '../components/AuthTest';
 import { auth } from '../services/firebase';
 import useAuthStore from '../store/authStore';
 
@@ -363,6 +364,9 @@ const Home = () => {
           </div>
         </div>
       </div>
+      
+      {/* Auth Test Component (Development Only) */}
+      {process.env.NODE_ENV === 'development' && <AuthTest />}
     </div>
   );
 };
